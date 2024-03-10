@@ -1,0 +1,22 @@
+<h2>Booking for <%= @flight.name %></h2>
+
+<% if @booking.errors.any? %>
+    <ul>
+        <% @booking.errors.full_messages.each do |error| %>
+            <li><%= error %></li>
+        <% end %>
+    </ul>
+<% end %>
+
+<%= form_with model: @booking do |form| %>
+    <%= form.hidden_field :flight_id, value: @flight.id %>
+    <%= form.fields_for :passengers do |subform| %>
+        <%= subform.label :name %>
+        <%= subform.text_field :name %>
+        <br>
+        <%= subform.label :email %>
+        <%= subform.email_field :email %>
+        <br>
+    <% end %>
+    <%= form.submit %>
+<% end %>

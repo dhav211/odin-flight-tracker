@@ -1,0 +1,37 @@
+<h1>Search for Flight</h1>
+
+<%= form_with url: '/flights', method: :get do |form| %>
+  <%= form.label :departing_airport, 'Departing From' %>
+  <%= form.select(:departing_airport_id, @airports_choices) %>
+
+  <%= form.label :arriving_airport, 'Arriving To' %>
+  <%= form.select(:arriving_airport_id, @airports_choices) %>
+
+  <%= form.label :passengers, 'How many passengers?' %>
+  <select name='passenger_count'>
+    <%= 4.times.each do |i| %>
+      <option value=" <%= i + 1 %> "><%= i + 1 %></option>
+    <% end %>
+  </select>
+
+  <%= form.label :date %>
+  <select name='date'>
+    <%= (@latest_date.day - @earliest_date.day).times.each do |i| %>
+      <option value=" <%= @earliest_date + i.days %>"><%= (@earliest_date + i.days).strftime('%m/%d/%Y') %></option>
+    <% end %>
+  </select>
+
+  <%= form.submit 'Search For Flights' %>
+<% end %>
+
+<% unless @results.nil? || @results[:flights].empty? %>
+  <%= form_with url: '/bookings/new', method: :get do |form| %>
+    <%= form.hidden_field :passengers, value: @results[:passenger_count] %>
+    <%= form.collection_radio_buttons :flight_id, @results[:flights], :id, :name do |b| %>
+      <%= b.radio_button %>
+      <%= b.label %> </br>
+    <% end %>
+
+    <%= form.submit 'Select Flight' %>
+  <% end %>
+<% end %>

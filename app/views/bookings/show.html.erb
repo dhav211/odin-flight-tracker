@@ -1,0 +1,11 @@
+<h2>Flight <%= @booking.flight.name %></h2>
+
+<ul>
+    <% @passengers.each_with_index do |passenger, index| %>
+        <li>
+            <h3>Passenger <%= index + 1 %></h3>
+            <p>Name: <%= passenger.name %></p>
+            <p>Email: <%= passenger.email %></p>
+        </li>
+    <% end %>
+</ul>
